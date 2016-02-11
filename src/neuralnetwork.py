@@ -17,12 +17,12 @@ def save(neuralnetwork, fileName, overwrite=False):
 	for layer in neuralnetwork.layers:
 		weights.append(layer.weights)
 	data = np.array([weights, neuralnetwork.shape])
-	
+
 	if not overwrite and os.path.isfile(fileName + ".npy"):
 		number = 1
 		while os.path.isfile(makeNewName(fileName, number)):
 			number += 1
-		np.save(makeNewName(fileName, number), data)
+		fileName = makeNewName(fileName, number), data)
 
 	np.save(fileName + ".npy", data)
 
