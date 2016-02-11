@@ -37,3 +37,5 @@ for t, x in testing:
 		success += 1
 
 print 'On testing data ' + str(success*100.0 / len(testing)) + '% success'
+
+neuralnetwork.save(nnet, 'saves/mnist_net')

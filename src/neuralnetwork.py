@@ -22,9 +22,9 @@ def save(neuralnetwork, fileName, overwrite=False):
 		number = 1
 		while os.path.isfile(makeNewName(fileName, number)):
 			number += 1
-		fileName = makeNewName(fileName, number), data)
+		fileName = makeNewName(fileName, number)
 
-	np.save(fileName + ".npy", data)
+	np.save(fileName, data)
 
 def makeNewName(fileName, number):
 	return fileName + '(' + str(number) + ')' + ".npy"
