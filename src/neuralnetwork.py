@@ -1,4 +1,6 @@
 import numpy as np
+import os.path
+import pudb
 
 def sigmoid(x):
 	y = 1 / (1 + np.exp(-x))
@@ -9,6 +11,37 @@ def getSquaredError(errors):
 	for error in errors:
 		squared_error += error**2
 	return squared_error / 2
+
+def save(neuralnetwork, fileName, overwrite=False):
+	weights = []
+	for layer in neuralnetwork.layers:
+		weights.append(layer.weights)
+	data = np.array([weights, neuralnetwork.shape])
+	
+	if not overwrite and os.path.isfile(fileName + ".npy"):
+		number = 1
+		while os.path.isfile(makeNewName(fileName, number)):
+			number += 1
+		np.save(makeNewName(fileName, number), data)
+
+	np.save(fileName + ".npy", data)
+
+def makeNewName(fileName, number):
+	return fileName + '(' + str(number) + ')' + ".npy"
+
+def load(fileName):
+	data = np.load(fileName + ".npy")
+	weights = data[0]
+	shape = data[1]
+
+	layers = []
+	for weight in weights:
+		layers.append(Layer(0,0))
+		layers[-1].weights = weight
+	neuralnetwork = NeuralNetwork([])
+	neuralnetwork.layers = layers
+	neuralnetwork.shape = shape
+	return neuralnetwork
 
 class Layer(object):
 	def __init__(self, input_size, output_size, f=sigmoid):
@@ -35,7 +68,9 @@ class Layer(object):
 
 class NeuralNetwork(object):
 	def __init__(self, layer_sizes):
+		# If new attributes are ever added, ensure to update save() and load()
 		self.layers = [Layer(x, y) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])]
+		self.shape = tuple(layer_sizes)
 
 	def evaluate(self, inputs):
 		for layer in self.layers:

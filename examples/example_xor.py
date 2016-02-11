@@ -1,4 +1,4 @@
-import neuralnetwork as nn
+from src import neuralnetwork
 
 def truthTable (n):
 # Credit: http://stackoverflow.com/a/6336676
@@ -16,14 +16,14 @@ def xor(*args):
 inputs = truthTable(4)
 targets = [[xor(a, b, c, d)] for a, b, c, d in inputs]
 
-nnet = nn.NeuralNetwork([4, 2, 1])
+nnet = neuralnetwork.NeuralNetwork([4, 2, 1])
 
 for i in range(1000):
 	error = 0
 	for x, t in zip(inputs, targets):
 		error += nnet.learn(x, t)
-	print 'Error: ', error
-print 'Finished'
+	if i%10 == 0:
+		print 'Iteration:', i, 'Error:', error
 
 for x, t in zip(inputs, targets):
 	y = nnet.evaluate(x)[0]
