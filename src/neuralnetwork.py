@@ -51,8 +51,8 @@ class Layer(object):
 	def feedforward(self, inputs):
 		self.inputs = np.append(inputs, 1)
 		z = np.dot(self.inputs, self.weights)
-		outputs, self.derivative = self.activation_function(z)
-		return outputs
+		self.outputs, self.derivative = self.activation_function(z)
+		return self.outputs
 
 	def learn(self, inputs, targets, step_size=1):
 		outputs = self.feedforward(inputs)
