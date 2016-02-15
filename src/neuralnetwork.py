@@ -67,9 +67,9 @@ class Layer(object):
 		self.weights -= step_size * np.outer(self.inputs, self.errors)
 
 class NeuralNetwork(object):
-	def __init__(self, layer_sizes):
+	def __init__(self, layer_sizes, magnitude=0):
 		# If new attributes are ever added, ensure to update save() and load()
-		self.layers = [Layer(x, y) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])]
+		self.layers = [Layer(x, y) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])] / 10**magnitude
 		self.shape = tuple(layer_sizes)
 
 	def evaluate(self, inputs):

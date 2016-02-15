@@ -1,7 +1,7 @@
 import sys
 import time
 
-class printer(object):
+class Printer(object):
 	def __init__(self, wait_time):
 		self.wait_time = wait_time
 		self.t = time.time()
