@@ -42,7 +42,7 @@ def updateWeights(self, step_size=1, previous_dir=None):
 # Images are 28x28 pixels. Reshapen, they are 784x1
 training = [(mux(label), image.reshape(784)/255.0) for label, image in mnist.read(path=path, dataset="training")][:6000]
 testing = [(mux(label), image.reshape(784)/255.0) for label, image in mnist.read(path=path, dataset="testing")][:1000]
-nnet = neuralnetwork.NeuralNetwork([784, 30, 30, 30, 10])
+nnet = neuralnetwork.NeuralNetwork([784, 30, 30, 30, 10], magnitude=2)
 
 ITR = 3
 p = printer.Printer(0.5)

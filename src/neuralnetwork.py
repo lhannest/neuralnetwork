@@ -44,8 +44,8 @@ def load(fileName):
 	return neuralnetwork
 
 class Layer(object):
-	def __init__(self, input_size, output_size, f=sigmoid):
-		self.weights = np.random.randn(input_size + 1, output_size)
+	def __init__(self, input_size, output_size, f=sigmoid, magnitude=0):
+		self.weights = np.random.randn(input_size + 1, output_size) / 10**magnitude
 		self.activation_function = f
 
 	def feedforward(self, inputs):
@@ -69,7 +69,7 @@ class Layer(object):
 class NeuralNetwork(object):
 	def __init__(self, layer_sizes, magnitude=0):
 		# If new attributes are ever added, ensure to update save() and load()
-		self.layers = [Layer(x, y) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])] / 10**magnitude
+		self.layers = [Layer(x, y, magnitude=magnitude) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])]
 		self.shape = tuple(layer_sizes)
 
 	def evaluate(self, inputs):
