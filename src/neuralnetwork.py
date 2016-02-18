@@ -6,6 +6,12 @@ def sigmoid(x):
 	y = 1 / (1 + np.exp(-x))
 	return y, y * (1 - y)
 
+def softplus(x):
+	return np.log(1 + np.exp(x)), 1 / (1 + np.exp(-x))
+
+def relu(x):
+	return np.maximum(0, x), (x > 0) * 1
+
 def getSquaredError(errors):
 	squared_error = 0
 	for error in errors:
