@@ -56,3 +56,32 @@ def show(image):
     ax.xaxis.set_ticks_position('top')
     ax.yaxis.set_ticks_position('left')
     pyplot.show()
+
+"""
+The following is produced by myself:
+"""
+
+path = 'data/'
+
+def mux(number):
+	result = np.zeros(10)
+	result[number] = 1
+	return result
+
+def demux(numbers):
+	highest_index = 0
+	for i, number in enumerate(numbers):
+		if number > numbers[highest_index]:
+			highest_index = i
+	return highest_index
+
+# Images are 28x28 pixels. Reshapen, they are 784x1
+training = [(mux(label), image/255.0) for label, image in read(path=path, dataset="training")]
+testing = [(mux(label), image/255.0) for label, image in read(path=path, dataset="testing")]
+# Convolution will be 24x24, reshapen it is 576x1
+
+def getTrainingSet():
+	return training
+
+def getTestingSet():
+	return testing
