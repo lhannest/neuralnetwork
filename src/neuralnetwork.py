@@ -5,16 +5,13 @@ import pudb
 # np.seterr(all='raise')
 
 def sigmoid(x):
-	exp = np.nan_to_num(np.exp(-x))
-	y = (1 / (1 + exp))
+	y = (1 / (1 + np.exp(-x)))
 	return y, y * (1 - y)
 
 def softplus(x):
-	exp = np.nan_to_num(np.exp(-x))
-	return np.log(1 + exp), 1 / (1 + exp)
+	return np.log(1 + np.exp(-x)), 1 / (1 + np.exp(-x))
 
 def relu(x):
-	x = np.nan_to_num(x)
 	return np.maximum(0, x), (x >= 0) * 1
 
 def squaredError(layer, targets, isDerivative=False):
@@ -33,7 +30,7 @@ def crossEntropyError(layer, targets, isDerivative=False):
 		return -np.sum(np.nan_to_num(t*np.lon(y) + (1 - t)*np.log(1 - y)))
 
 
-def save(neuralnetwork, fileName, overwrite=False):
+def save(neuralnetwork, fileName, overwrite=False, printResults=True):
 	weights = []
 	for layer in neuralnetwork.layers:
 		weights.append(layer.weights)
@@ -45,7 +42,10 @@ def save(neuralnetwork, fileName, overwrite=False):
 			number += 1
 		fileName = makeNewName(fileName, number)
 
+	if printResults:
+		print 'neural network saved at:', fileName
 	np.save(fileName, data)
+
 
 def makeNewName(fileName, number):
 	return fileName + '(' + str(number) + ')' + ".npy"
