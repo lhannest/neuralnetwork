@@ -1,6 +1,5 @@
 import sys
 import time
-import pudb
 
 class Printer(object):
 	def __init__(self, wait_time):

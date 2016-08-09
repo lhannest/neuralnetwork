@@ -1,6 +1,5 @@
 import numpy as np
 import os.path
-import pudb
 
 # np.seterr(all='raise')
 
@@ -63,8 +62,9 @@ def load(fileName):
 	return neuralnetwork
 
 class Layer(object):
-	def __init__(self, input_size, output_size, fn=sigmoid, magnitude=0):
-		self.weights = np.random.randn(input_size + 1, output_size) / 10**magnitude
+	def __init__(self, input_size, output_size, fn=sigmoid):
+		r = np.sqrt(6. / (input_size + output_size))
+		self.weights = np.random.uniform(-r, r, (input_size + 1, output_size))
 		self.activation_function = fn
 		self.shape = (input_size, output_size)
 
@@ -85,9 +85,9 @@ class Layer(object):
 		self.weights -= step_size * dweight
 
 class NeuralNetwork(object):
-	def __init__(self, layer_sizes=[], magnitude=0):
+	def __init__(self, layer_sizes=[]):
 		# If new attributes are ever added, ensure to update save() and load()
-		self.layers = [Layer(x, y, magnitude=magnitude) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])]
+		self.layers = [Layer(x, y) for x, y in zip(layer_sizes[:-1], layer_sizes[1:])]
 
 	@property
 	def shape(self):
@@ -104,8 +104,12 @@ class NeuralNetwork(object):
 		self.layers[-1].errors = errfn(self.layers[-1], targets, isDerivative=True)
 		errors = np.dot(self.layers[-1].weights, self.layers[-1].errors)[:-1]
 
+		return_errors = errors
+
 		for layer in reversed(self.layers[:-1]):
 			errors = layer.backpropagate(errors)
 
 		for layer in self.layers:
 			layer.updateWeights(step_size)
+
+		return np.sum(np.square(return_errors))

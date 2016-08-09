@@ -21,7 +21,7 @@ nnet = neuralnetwork.NeuralNetwork([4, 2, 1])
 for i in range(1000):
 	error = 0
 	for x, t in zip(inputs, targets):
-		error += nnet.learn(x, t)
+		error += nnet.learn(x, t, step_size=2)
 	if i%10 == 0:
 		print 'Iteration:', i, 'Error:', error
 
